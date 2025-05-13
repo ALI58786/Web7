@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools Hub 786 - All in One Place</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --secondary-blue: #3b82f6;
+            --light-blue: #93c5fd;
+            --dark-blue: #1e40af;
+            --gradient-blue-start: #60a5fa;
+            --gradient-blue-end: #1d4ed8;
+        }
+        
+        html, body {
+            scroll-behavior: smooth;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Header animations */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--light-blue);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        /* Button animations */
+        .btn-animate {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-animate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+        
+        .btn-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        /* Card animations */
+        .tool-card {
+            transition: all 0.3s ease;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Reveal animations */
+        .reveal {
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Search bar animations */
+        .search-container {
+            transition: all 0.3s ease;
+        }
+        
+        .search-container:focus-within {
+            transform: scale(1.01);
+        }
+        
+        /* Tool use button */
+        .use-tool-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .use-tool-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .use-tool-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transition: left 0.7s ease;
+        }
+        
+        .use-tool-btn:hover::before {
+            left: 100%;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-blue);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-blue);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Sticky Header -->
+    <header class="fixed top-0 left-0 right-0 bg-white bg-opacity-95 shadow-sm z-50 transition-all duration-300" id="header">
+        <div class="container mx-auto px-4 py-4 flex flex-wrap items-center justify-between">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold text-blue-600">Tools Wonder</h1>
+            </div>
+            
+            <nav class="hidden md:flex space-x-8">
+                <a href="#" class="nav-link text-gray-800 font-medium hover:text-blue-600">Home</a>
+                <a href="#tools" class="nav-link text-gray-800 font-medium hover:text-blue-600">Tools</a>
+                <a href="#contact" class="nav-link text-gray-800 font-medium hover:text-blue-600">Contact</a>
+            </nav>
+            
+            <button class="md:hidden focus:outline-none" id="menu-button">
+                <i class="fas fa-bars text-blue-600 text-xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden transition-all duration-300 ease-in-out" id="mobile-menu">
+            <div class="px-4 py-3 space-y-3 bg-white shadow-md">
+                <a href="#" class="block text-gray-800 font-medium hover:text-blue-600">Home</a>
+                <a href="#tools" class="block text-gray-800 font-medium hover:text-blue-600">Tools</a>
+                <a href="#contact" class="block text-gray-800 font-medium hover:text-blue-600">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-24 md:pt-32 pb-20 bg-gradient-to-br from-blue-400 to-blue-700">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap items-center">
+                <div class="w-full lg:w-1/2 text-white mb-10 lg:mb-0 reveal">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Tool Hub 786, All in One Place</h1>
+                    <p class="text-lg md:text-xl opacity-90 mb-8">Convert, calculate, compress, and simplify your everyday tasks — fast and free.</p>
+                    <a href="#tools" class="btn-animate btn-pulse inline-block bg-white text-blue-700 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-blue-50">
+                        Explore Tools <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                <div class="w-full lg:w-1/2 flex justify-center reveal">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white bg-opacity-20 p-6 rounded-lg text-center">
+                            <i class="fas fa-image text-4xl text-white mb-2"></i>
+                            <p class="text-white font-medium">Image Tools</p>
+                        </div>
+                        <div class="bg-white bg-opacity-20 p-6 rounded-lg text-center">
+                            <i class="fas fa-file-alt text-4xl text-white mb-2"></i>
+                            <p class="text-white font-medium">Text Tools</p>
+                        </div>
+                        <div class="bg-white bg-opacity-20 p-6 rounded-lg text-center">
+                            <i class="fas fa-code text-4xl text-white mb-2"></i>
+                            <p class="text-white font-medium">Code Tools</p>
+                        </div>
+                        <div class="bg-white bg-opacity-20 p-6 rounded-lg text-center">
+                            <i class="fas fa-video text-4xl text-white mb-2"></i>
+                            <p class="text-white font-medium">Video Tools</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Bar -->
+    <div class="container mx-auto px-4 -mt-8">
+        <div class="search-container bg-white rounded-lg shadow-lg p-4 flex items-center relative reveal">
+            <i class="fas fa-search text-blue-500 mr-3 ml-2 text-xl"></i>
+            <input type="text" id="search-tools" placeholder="Search a tool..." class="w-full py-2 px-3 focus:outline-none text-lg" autocomplete="off">
+            <div class="search-animation absolute left-0 bottom-0 h-1 bg-blue-500 rounded-full" style="width: 0;"></div>
+        </div>
+    </div>
+
+    <!-- Tools Section -->
+    <section id="tools" class="py-16">
+        <div class="container mx-auto px-4">
+            <!-- Image Tools -->
+            <div class="tool-section mb-16 reveal">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2 flex items-center">
+                    <i class="fas fa-image text-blue-600 mr-3"></i>
+                    Image Tools
+                </h2>
+                <p class="text-gray-600 mb-8">Transform, optimize, and edit your images with these powerful tools</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-exchange-alt text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Image Converter</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Convert images between formats easily</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-compress-arrows-alt text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Image Compressor</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Reduce file size without losing quality</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-expand-arrows-alt text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Resizer</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Resize images to exact dimensions</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-crop text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Cropper</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Crop images precisely to your needs</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-font text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">OCR</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Extract text from images</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-sync text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Rotator</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Rotate or flip images as needed</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document Tools -->
+            <div class="tool-section mb-16 reveal">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2 flex items-center">
+                    <i class="fas fa-file-alt text-blue-600 mr-3"></i>
+                    Document Tools
+                </h2>
+                <p class="text-gray-600 mb-8">Manage, convert, and optimize your documents efficiently</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-file-word text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">PDF to Word/PDF</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Convert between document formats</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-compress text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Compressor</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Reduce PDF file size quickly</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-object-group text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Merger/Splitter</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Combine or split PDF documents</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-exchange-alt text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Converter</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Convert between multiple file formats</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-lock text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Lock/Unlock</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Add or remove password protection</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-signature text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">eSign</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Sign documents digitally</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculator Tools -->
+            <div class="tool-section mb-16 reveal">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2 flex items-center">
+                    <i class="fas fa-calculator text-blue-600 mr-3"></i>
+                    Calculator Tools
+                </h2>
+                <p class="text-gray-600 mb-8">Get quick and accurate calculations for various purposes</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-square-root-alt text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Scientific</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Advanced mathematical calculations</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-birthday-cake text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Age</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Calculate exact age from birthdate</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-weight text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">BMI</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Calculate Body Mass Index</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-home text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Loan EMI</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Calculate loan payments easily</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-percentage text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">GST</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Calculate taxes and final amounts</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-dollar-sign text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Currency</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Convert between world currencies</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text Tools -->
+            <div class="tool-section mb-16 reveal">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2 flex items-center">
+                    <i class="fas fa-font text-blue-600 mr-3"></i>
+                    Text Tools
+                </h2>
+                <p class="text-gray-600 mb-8">Manipulate and format text with these handy utilities</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-text-height text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Case Converter</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Convert between text case styles</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-list-ol text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Word Counter</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Count words, characters and more</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-copy text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Remove Duplicates</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Remove duplicate lines from text</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-sort-alpha-down text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Sorter</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Sort text lines alphabetically</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-exchange-alt text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Reverser</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Reverse text strings instantly</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-key text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Encryptor/Decryptor</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Encrypt or decrypt text securely</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Web/Developer Tools -->
+            <div class="tool-section mb-16 reveal">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2 flex items-center">
+                    <i class="fas fa-code text-blue-600 mr-3"></i>
+                    Web/Developer Tools
+                </h2>
+                <p class="text-gray-600 mb-8">Essential utilities for web development and coding</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-compress text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Minifier</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Minify HTML, CSS and JavaScript</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-indent text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">JSON Formatter</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Format and validate JSON data</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-file-code text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Base64 Encoder</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Encode and decode Base64 data</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-link text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">URL Encoder</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Encode and decode URL strings</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-palette text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Color Picker</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Select and generate color codes</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-search text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Regex Tester</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Test and validate regular expressions</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Color Tools -->
+            <div class="tool-section mb-16 reveal">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2 flex items-center">
+                    <i class="fas fa-palette text-blue-600 mr-3"></i>
+                    Color Tools
+                </h2>
+                <p class="text-gray-600 mb-8">Create, convert, and work with colors effectively</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-eye-dropper text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Picker from Image</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Extract colors from any image</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-exchange-alt text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">HEX to RGB</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Convert between color formats</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-fill-drip text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Gradient Generator</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Create beautiful color gradients</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-adjust text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Contrast Checker</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Check accessibility compliance</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-paint-brush text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Palette Generator</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Create matching color schemes</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-low-vision text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Blindness Simulator</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Simulate color blindness types</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEO & Marketing Tools -->
+            <div class="tool-section mb-16 reveal">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2 flex items-center">
+                    <i class="fas fa-chart-line text-blue-600 mr-3"></i>
+                    SEO & Marketing Tools
+                </h2>
+                <p class="text-gray-600 mb-8">Optimize your online content for better search visibility</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-percentage text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Keyword Density</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Check keyword frequency in content</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-tags text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Meta Tag Analyzer</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Analyze website meta information</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-file-alt text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Word Counter</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Count words, characters and readability</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Utility Tools -->
+            <div class="tool-section reveal">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2 flex items-center">
+                    <i class="fas fa-tools text-blue-600 mr-3"></i>
+                    Utility Tools
+                </h2>
+                <p class="text-gray-600 mb-8">Essential utilities for everyday digital tasks</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-qrcode text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">QR & Barcode Generator</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Create scannable codes easily</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-fingerprint text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">UUID Generator</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Generate unique identifiers</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-exchange-alt text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Unit Converter</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Convert between measurement units</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-clock text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Time Zone Converter</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Convert times across time zones</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tool-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-random text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-xl font-semibold text-gray-800">Random Generator</h3>
+                            </div>
+                            <p class="text-gray-600 mb-5">Generate random numbers/passwords</p>
+                            <button class="use-tool-btn w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Use Tool
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-blue-900 text-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap">
+                <div class="w-full md:w-1/2 mb-10 md:mb-0">
+                    <h2 class="text-3xl font-bold mb-4">Tools Wonder</h2>
+                    <p class="text-blue-200 mb-6">Simplifying your digital life.</p>
+                    <div class="mb-6">
+                        <p class="flex items-center mb-2">
+                            <i class="fas fa-envelope mr-3 text-blue-300"></i>
+                            <a href="mailto:najafaliali29@gmail.com" class="text-blue-200 hover:text-white transition-colors">najafaliali29@gmail.com</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
+                            <ul class="space-y-2">
+                                <li><a href="#" class="text-blue-200 hover:text-white transition-colors">Home</a></li>
+                                <li><a href="#tools" class="text-blue-200 hover:text-white transition-colors">Tools</a></li>
+                                <li><a href="#contact" class="text-blue-200 hover:text-white transition-colors">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4">Legal</h3>
+                            <ul class="space-y-2">
+                                <li><a href="#" class="text-blue-200 hover:text-white transition-colors">Privacy Policy</a></li>
+                                <li><a href="#" class="text-blue-200 hover:text-white transition-colors">Terms of Use</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-blue-800 mt-12 pt-6 text-center">
+                <p class="text-blue-300">&copy; 2023 Tools Wonder. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Sticky header
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('shadow-md');
+                header.classList.add('py-3');
+            } else {
+                header.classList.remove('shadow-md');
+                header.classList.remove('py-3');
+            }
+        });
+
+        // Scroll reveal animation
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+        
+        // Search functionality
+        document.getElementById('search-tools').addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const toolCards = document.querySelectorAll('.tool-card');
+            
+            toolCards.forEach(card => {
+                const toolName = card.querySelector('h3').textContent.toLowerCase();
+                const toolDesc = card.querySelector('p').textContent.toLowerCase();
+                
+                if (toolName.includes(searchTerm) || toolDesc.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Animate search bar
+            const searchAnimation = document.querySelector('.search-animation');
+            if (this.value.length > 0) {
+                searchAnimation.style.width = '100%';
+            } else {
+                searchAnimation.style.width = '0';
+            }
+        });
+    </script>
+</body>
+</html>
