@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools Hub 786 - Image Converter</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1976D2;
+            --primary-light: #42a5f5;
+            --primary-dark: #0d47a1;
+            --secondary-color: #64B5F6;
+            --text-color: #333;
+            --text-light: #666;
+            --bg-color: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background: linear-gradient(to bottom right, #f8f9fa, #e3f2fd);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 2rem;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            box-shadow: var(--shadow);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .logo-text {
+            font-weight: 600;
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-text:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-link {
+            color: var(--white);
+            margin: 0 1rem;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--white);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(25, 118, 210, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(25, 118, 210, 0.4);
+            background: linear-gradient(135deg, #1e88e5, var(--primary-color));
+        }
+
+        .btn-primary:disabled {
+            background: #b0bec5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--secondary-color);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background-color: rgba(100, 181, 246, 0.1);
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(100, 181, 246, 0.2);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px;
+        }
+
+        .range-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .range-value {
+            min-width: 40px;
+            text-align: right;
+            margin-left: 10px;
+        }
+
+        .preview-container {
+            width: 100%;
+            max-height: 300px;
+            overflow: hidden;
+            border-radius: 8px;
+            margin: 1rem 0;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .preview-img {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+        }
+
+        .file-info {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #e3f2fd;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .file-detail {
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-detail strong {
+            margin-right: 0.25rem;
+        }
+
+        .loading {
+            position: relative;
+        }
+
+        .loading:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .loading:before {
+            content: '';
+            box-sizing: border-box;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            margin-top: -20px;
+            margin-left: -20px;
+            border-radius: 50%;
+            border: 3px solid rgba(25, 118, 210, 0.2);
+            border-top-color: var(--primary-color);
+            z-index: 20;
+            animation: spinner 0.8s linear infinite;
+        }
+
+        @keyframes spinner {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .alert-danger {
+            background-color: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #c62828;
+        }
+
+        .alert-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .result-section {
+            margin-top: 2rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem 0;
+            color: var(--text-light);
+            background-color: #e3f2fd;
+            border-top: 1px solid #bbdefb;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .convert-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .convert-btn:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .convert-btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 1;
+            }
+            20% {
+                transform: scale(25, 25);
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(40, 40);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 0.75rem;
+            }
+            
+            .nav-link {
+                margin: 0 0.5rem;
+                padding: 0.25rem;
+                font-size: 0.9rem;
+            }
+            
+            .upload-area {
+                padding: 1.5rem;
+            }
+            
+            .preview-container {
+                max-height: 250px;
+            }
+            
+            .preview-img {
+                max-height: 250px;
+            }
+            
+            .file-info {
+                flex-direction: column;
+            }
+            
+            .file-detail {
+                margin-right: 0;
+            }
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-light), var(--primary-color));
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .tool-heading {
+            position: relative;
+            color: var(--primary-dark);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-heading::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            border-radius: 2px;
+        }
+
+        .tool-instructions {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            max-width: 900px;
+            line-height: 1.7;
+        }
+
+        .features-list {
+            margin: 2rem 0;
+            padding-left: 0;
+            list-style-type: none;
+        }
+
+        .feature-item {
+            position: relative;
+            padding-left: 1.8rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-item:before {
+            content: '✓';
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center">
+                <a href="#" class="logo-text">
+                    <span class="text-white">Tools Wonder</span>
+                </a>
+                <nav class="hidden md:flex">
+                    <a href="#" class="nav-link">Home</a>
+                    <a href="#" class="nav-link">Tools</a>
+                    <a href="#" class="nav-link">Contact</a>
+                </nav>
+                <div class="flex md:hidden">
+                    <button class="text-white">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto py-8 px-4">
+        <h1 class="text-3xl font-bold mb-2 tool-heading">Image Converter Tool</h1>
+        <p class="tool-instructions">
+            Convert your images between different formats in seconds. Upload your image, select your desired format, 
+            adjust quality settings if needed, and download the converted image. Simple, fast, and completely free.
+        </p>
+
+        <ul class="features-list">
+            <li class="feature-item">Convert to JPG, PNG, WEBP, and more formats</li>
+            <li class="feature-item">Adjust quality settings to optimize file size</li>
+            <li class="feature-item">Fast processing, entirely in your browser</li>
+            <li class="feature-item">No watermarks on your converted images</li>
+            <li class="feature-item">Your files stay private - no uploading to servers</li>
+        </ul>
+
+        <!-- Alert area -->
+        <div id="alertArea" class="mb-6 hidden"></div>
+
+        <!-- Upload Section -->
+        <div class="card p-6 mb-8">
+            <div id="uploadArea" class="upload-area">
+                <i class="fas fa-cloud-upload-alt text-5xl text-blue-500 mb-4"></i>
+                <h2 class="text-xl font-semibold mb-2">Drag & Drop your image here</h2>
+                <p class="text-gray-500 mb-4">or click to browse files</p>
+                <button id="browseBtn" class="btn-primary">
+                    <i class="fas fa-folder-open mr-2"></i> Browse Files
+                </button>
+                <input type="file" id="fileInput" class="hidden" accept="image/*">
+            </div>
+        </div>
+
+        <!-- Preview and Options Section -->
+        <div id="previewCard" class="card p-6 mb-8 hidden fade-in">
+            <h3 class="text-xl font-semibold mb-4">Image Preview</h3>
+            
+            <div id="imagePreviewContainer" class="preview-container">
+                <img id="imagePreview" class="preview-img" alt="Image Preview">
+            </div>
+            
+            <div id="fileInfo" class="file-info">
+                <div class="file-detail">
+                    <strong>File name:</strong> <span id="fileName">-</span>
+                </div>
+                <div class="file-detail">
+                    <strong>Original size:</strong> <span id="fileSize">-</span>
+                </div>
+                <div class="file-detail">
+                    <strong>Dimensions:</strong> <span id="dimensions">-</span>
+                </div>
+                <div class="file-detail">
+                    <strong>Type:</strong> <span id="fileType">-</span>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div class="input-group">
+                    <label for="formatSelect" class="form-label">Convert to:</label>
+                    <select id="formatSelect" class="form-control">
+                        <option value="jpeg">JPEG</option>
+                        <option value="png">PNG</option>
+                        <option value="webp">WEBP</option>
+                    </select>
+                </div>
+                
+                <div id="qualityContainer" class="input-group">
+                    <label for="qualityRange" class="form-label">Quality:</label>
+                    <div class="range-wrapper">
+                        <input type="range" id="qualityRange" class="form-control" min="10" max="100" step="5" value="85">
+                        <span id="qualityValue" class="range-value">85%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-center mt-6">
+                <button id="convertBtn" class="btn-primary convert-btn">
+                    <i class="fas fa-exchange-alt mr-2"></i> Convert Image
+                </button>
+            </div>
+        </div>
+        
+        <!-- Result Section -->
+        <div id="resultCard" class="card p-6 result-section hidden fade-in">
+            <h3 class="text-xl font-semibold mb-4">Conversion Result</h3>
+            
+            <div id="resultPreviewContainer" class="preview-container mb-4">
+                <img id="resultPreview" class="preview-img" alt="Result Preview">
+            </div>
+            
+            <div id="resultInfo" class="file-info">
+                <div class="file-detail">
+                    <strong>Original size:</strong> <span id="originalSize">-</span>
+                </div>
+                <div class="file-detail">
+                    <strong>New size:</strong> <span id="newSize">-</span>
+                </div>
+                <div class="file-detail">
+                    <strong>Format:</strong> <span id="newFormat">-</span>
+                </div>
+                <div class="file-detail">
+                    <strong>Compression:</strong> <span id="compression">-</span>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-center gap-4 mt-6">
+                <button id="downloadBtn" class="btn-primary" disabled>
+                    <i class="fas fa-download mr-2"></i> Download Image
+                </button>
+                
+                <button id="resetBtn" class="btn-primary bg-gray-600 hover:bg-gray-700">
+                    <i class="fas fa-redo mr-2"></i> Convert New Image
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container mx-auto">
+            <div class="text-center mb-4">
+                <span class="logo-text text-blue-700">Tools Wonder</span>
+                <p class="text-sm mt-1">Simplifying your digital life.</p>
+            </div>
+            <div class="mb-4">
+                <a href="mailto:najafaliali29@gmail.com" class="text-blue-600 hover:underline">
+                    <i class="fas fa-envelope mr-2"></i>najafaliali29@gmail.com
+                </a>
+            </div>
+            <div class="text-sm">
+                <a href="#" class="text-gray-600 hover:text-blue-600 mx-2">Privacy Policy</a>
+                <span class="text-gray-400">|</span>
+                <a href="#" class="text-gray-600 hover:text-blue-600 mx-2">Terms of Use</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const fileInput = document.getElementById('fileInput');
+            const uploadArea = document.getElementById('uploadArea');
+            const browseBtn = document.getElementById('browseBtn');
+            const previewCard = document.getElementById('previewCard');
+            const imagePreview = document.getElementById('imagePreview');
+            const fileName = document.getElementById('fileName');
+            const fileSize = document.getElementById('fileSize');
+            const fileType = document.getElementById('fileType');
+            const dimensions = document.getElementById('dimensions');
+            const formatSelect = document.getElementById('formatSelect');
+            const qualityRange = document.getElementById('qualityRange');
+            const qualityValue = document.getElementById('qualityValue');
+            const qualityContainer = document.getElementById('qualityContainer');
+            const convertBtn = document.getElementById('convertBtn');
+            const resultCard = document.getElementById('resultCard');
+            const resultPreview = document.getElementById('r
